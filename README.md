@@ -1,6 +1,62 @@
 # Family TV Catalog
 
-Edit `catalog_source.py` to add playlists and YouTube video links.
+Edit `catalog_source.py` to add playlists.
+
+## Channel Playlists
+
+For public YouTube channels, add a channel handle or channel URL:
+
+```python
+{
+    "id": "ms-rachel",
+    "name": "Ms Rachel",
+    "channel": "@msrachel",
+    "minDurationSeconds": 60,
+}
+```
+
+The script fetches the channel's public uploads, keeps videos that are at least
+`minDurationSeconds`, skips videos that YouTube marks as not embeddable, and
+writes them into `family_tv.json`.
+
+`channel` accepts:
+
+- `@msrachel`
+- `msrachel`
+- `https://www.youtube.com/@msrachel`
+- `https://www.youtube.com/channel/UC...`
+- `UC...` channel IDs
+
+Use handles or channel URLs rather than fuzzy display names. Display names can be
+ambiguous.
+
+To use channel playlists in GitHub Actions, add a repository secret named:
+
+```text
+YOUTUBE_API_KEY
+```
+
+Create this as a YouTube Data API v3 API key in Google Cloud. A normal API key is
+enough for public channel uploads; do not put your YouTube password in GitHub
+Secrets.
+
+Optional channel settings:
+
+```python
+{
+    "id": "pinkfong",
+    "name": "Pinkfong",
+    "channel": "@Pinkfong",
+    "minDurationSeconds": 60,
+    "maxVideos": 200,
+    "requireEmbeddable": True,
+}
+```
+
+`maxVideos` limits how many newest uploads are scanned before filtering. Omit it
+to scan all public uploads.
+
+## Hand-picked Video Playlists
 
 Video entries can be plain URL strings:
 

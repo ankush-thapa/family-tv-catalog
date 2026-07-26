@@ -24,6 +24,8 @@ jobs:
           python-version: "3.12"
 
       - name: Generate family_tv.json
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python build_family_tv_json.py
 
       - name: Commit generated JSON
