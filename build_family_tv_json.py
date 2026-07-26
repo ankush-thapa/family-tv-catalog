@@ -19,7 +19,8 @@ def slugify(value):
 
 
 def youtube_video_id(url):
-    parsed = urlparse(url.strip())
+    cleaned_url = url.strip().rstrip(".,;)")
+    parsed = urlparse(cleaned_url)
     host = parsed.netloc.lower().replace("www.", "")
 
     if host == "youtu.be":
@@ -28,7 +29,7 @@ def youtube_video_id(url):
         if parsed.path == "/watch":
             candidate = parse_qs(parsed.query).get("v", [""])[0]
         elif parsed.path.startswith("/shorts/"):
-            raise ValueError(f"Shorts are not allowed: {url}")
+            raise ValueError(f"Shorts are not allowed: {cleaned_url}")
         elif parsed.path.startswith("/embed/"):
             candidate = parsed.path.split("/")[2]
         else:
@@ -37,7 +38,7 @@ def youtube_video_id(url):
         candidate = ""
 
     if not re.fullmatch(r"[A-Za-z0-9_-]{11}", candidate):
-        raise ValueError(f"Could not parse YouTube video id from: {url}")
+        raise ValueError(f"Could not parse YouTube video id from: {cleaned_url}")
     return candidate
 
 
@@ -71,13 +72,15 @@ def build_catalog():
                 continue
             seen_video_ids.add(video_id)
 
+            oembed = {}
             try:
                 oembed = fetch_oembed(video_id)
             except Exception as exc:
-                raise ValueError(
-                    f"YouTube did not provide embeddable metadata for {video['url']}. "
-                    f"The video may be private, deleted, restricted, or not embeddable. Details: {exc}"
-                ) from exc
+                print(
+                    f"WARNING: Could not fetch YouTube metadata for {video['url']}. "
+                    f"Using fallback title. Details: {exc}",
+                    file=sys.stderr,
+                )
 
             title = video.get("title") or oembed.get("title") or f"{playlist['name']} {index:02d}"
             videos.append(
