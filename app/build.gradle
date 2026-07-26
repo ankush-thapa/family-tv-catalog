@@ -1,0 +1,16 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "com.athapa.familytv.probe"
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "com.athapa.familytv.probe"
+        minSdk 23
+        targetSdk 36
+        versionCode 2
+        versionName "0.2.0"
+    }
+}

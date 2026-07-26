@@ -1,4 +1,9 @@
-# Family TV Catalog
+# Family TV
+
+This repo contains both:
+
+- The generated TV catalog JSON.
+- The Android TV app that reads and plays that catalog.
 
 Edit `catalog_source.py` to add playlists.
 
@@ -86,6 +91,31 @@ https://raw.githubusercontent.com/ankush-thapa/family-tv-catalog/main/family_tv.
 ```sh
 python build_family_tv_json.py
 ```
+
+## Android TV App
+
+The app source lives in `app/`.
+
+Before creating a new APK, bump these values in `app/build.gradle`:
+
+```gradle
+versionCode 2
+versionName "0.2.0"
+```
+
+Then build a versioned debug APK:
+
+```sh
+scripts/build_versioned_apk.sh
+```
+
+The script writes APKs to:
+
+```text
+apks/family-tv-v<versionName>-debug.apk
+```
+
+Commit the generated APK when you want that installable version tracked.
 
 ## Notes
 
