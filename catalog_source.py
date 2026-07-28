@@ -2,7 +2,7 @@ CATALOG = [
     {
         "id": "ChuChuTv",
         "name": "Chu Chu TV",
-        "channel": "https://www.youtube.com/@ChiChuTV",
+        "channel": "https://www.youtube.com/@ChuChuTV",
         "minDurationSeconds": 90,
     },
     {
